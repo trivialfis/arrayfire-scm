@@ -3,5 +3,5 @@
  '("cmake"
    "pkg-config"
    "gcc-toolchain"
-   "arrayfire"
+   "arrayfire-cpu"
    "guile"))
