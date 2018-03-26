@@ -20,6 +20,7 @@ along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 #include "construction.h"
 #include "linear_algebra.h"
 #include "mathematic.h"
+#include "image.h"
 
 SCM afarray_type;
 
@@ -78,4 +79,6 @@ AS_API void arrayfire_scm_init()
   scm_c_define_gsubr("matmul", 2, 0, 0, (void*)&matmul_w);
   scm_c_define_gsubr("transpose", 1, 0, 0, (void*)&transpose_w);
   scm_c_define_gsubr("inverse", 1, 0, 0, (void*)&inverse_w);
+
+  scm_c_define_gsubr("load-image", 1, 1, 0, (void*)&load_image_w);
 }
