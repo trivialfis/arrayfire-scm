@@ -1,0 +1,10 @@
+This is an work-in-progress project for binding /arrayfire/ with /guile/.
+
+* Introduction
+I'm only doing this for fun, some basic blas and statistic operations are planed.
+
+* Current status
+Not working, NOT AT ALL.
+
+* License
+GPL3+
