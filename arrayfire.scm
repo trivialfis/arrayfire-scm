@@ -17,18 +17,12 @@
 ;;; along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (arrayfire)
-  #:export (randu
+  #:export (print-array
+	    randu
+	    from-array
+
 	    dot
 	    matmul
 	    transpose))
 
 (load-extension "libarrayfire-scm" "arrayfire_scm_init")
-
-(let ((a (randu 2 '(3 3) 'f32)))
-  (print-array a))
-
-(let* ((a #u32(1 2 3))
-       (b (from-array a))
-       (c (from-array #u32(3 2 1))))
-  (print-array b)
-  (print-array c))
