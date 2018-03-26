@@ -36,6 +36,10 @@
 	    dot
 	    matmul
 	    transpose
-	    inverse))
+	    inverse
+
+	    load-image
+	    save-image
+	    save-array))
 
 (load-extension "libarrayfire-scm" "arrayfire_scm_init")
