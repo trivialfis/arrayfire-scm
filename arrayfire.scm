@@ -21,7 +21,17 @@
 	    randu
 	    from-array
 
+	    afand
+	    afbitand
+	    afbitor
+	    afbitxor
 	    afeq
+	    afge
+	    afgt
+	    afle
+	    aflt
+	    afneq
+	    afnot
 
 	    dot
 	    matmul

@@ -24,7 +24,18 @@
 
 (test-begin "mathematic")
 
-(let ((a (from-array #2f32((1 2) (3 4)))))
-  (test-assert (afeq a a)))
+(let ((a (from-array #2f32((1 2) (3 4))))
+      (b (from-array #2u16((1 2) (3 4)))))
+  (test-assert (afand a a))
+  (test-assert (afbitand b b))
+  (test-assert (afbitor b b))
+  (test-assert (afbitxor b b))
+  (test-assert (afeq a a))
+  (test-assert (afge a a))
+  (test-assert (afgt a a))
+  (test-assert (afle a a))
+  (test-assert (aflt a a))
+  (test-assert (afneq a a))
+  (test-assert (afnot a)))
 
 (test-end "mathematic")
