@@ -90,5 +90,8 @@ AS_API void arrayfire_scm_init()
   init_afarray_type();
 
   scm_c_define_gsubr("randu", 3, 0, 0, (void*)&randu_w);
+
   scm_c_define_gsubr("dot", 2, 0, 0, (void*)&dot_w);
+  scm_c_define_gsubr("matmul", 2, 0, 0, (void*)&matmul_w);
+  scm_c_define_gsubr("transpose", 1, 0, 0, (void*)&transpose_w);
 }

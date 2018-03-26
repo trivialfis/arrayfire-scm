@@ -21,6 +21,7 @@ along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 #include "arrayfire_scm.h"
 
 SCM dot_w(SCM _lhs, SCM _rhs);
+SCM matmul_w(SCM _lhs, SCM _rhs);
 SCM transpose_w(SCM _in);
 
 #endif
