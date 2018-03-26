@@ -17,7 +17,10 @@ You should have received a copy of the GNU General Public License
 along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 
 #include "arrayfire_scm.h"
+#include "construction.h"
 #include "linear_algebra.h"
+
+SCM afarray_type;
 
 static void finalize_afarray(SCM array)
 {
@@ -41,55 +44,22 @@ void init_afarray_type(void)
   afarray_type =scm_make_foreign_object_type(name, slots, finalizer);
 }
 
-SCM randu_w(SCM _ndims, SCM _dims, SCM _dtype)
+
+SCM print_array_w(SCM ar)
 {
-  af_array out = 0;
-  SCM dtype_scm = scm_symbol_to_string(_dtype);
-  char *dtype = scm_to_locale_string(dtype_scm);
-
-  unsigned ndims = scm_to_uint64(_ndims);
-  SCM _listp = scm_list_p(_dims);
-  SCM _dims_len = 0;
-  if (scm_is_true(_listp))
-    {
-      _dims_len = scm_length(_dims);
-    }
-  int dl_debug = scm_to_int(_dims_len);
-  int _ndl_debug = scm_to_int(_ndims);
-  if (scm_is_false(scm_equal_p(_ndims, _dims_len)))
-    {
-      SCM message;
-      message = scm_from_utf8_string("Wrong dim.");
-      scm_throw(af_error, message);
-    }
-  int dims_len = scm_to_int(_dims_len);
-  dim_t *dims = (dim_t*)malloc(sizeof(dim_t)*dims_len);
-  for (int i = 0; i < ndims; ++i)
-    {
-      SCM temp = scm_car(_dims);
-      dims[i] = scm_to_int(temp);
-    }
-
-  af_err errno = af_randu(&out, ndims, dims, f32);
-  if (errno != AF_SUCCESS)
-    {
-      SCM message;
-      message = scm_from_utf8_string("af_randu failed.");
-      scm_throw(af_error, message);
-    }
-  free(dims);
-  SCM _ar = scm_make_foreign_object_1(afarray_type, (void*)out);
-  /* errno = af_print_array(out); */
-  /* if (errno != AF_SUCCESS) */
-  /*   printf("print error %d", errno); */
-  return _ar;
+  af_array value = scm_foreign_object_ref(ar, 0);
+  af_print_array(value);
+  return SCM_BOOL_T;
 }
 
 AS_API void arrayfire_scm_init()
 {
   init_afarray_type();
+  init_type_hash();
 
+  scm_c_define_gsubr("print-array", 1, 0, 0, (void*)&print_array_w);
   scm_c_define_gsubr("randu", 3, 0, 0, (void*)&randu_w);
+  scm_c_define_gsubr("from-array", 1, 0, 0, (void*)&from_scm_array);
 
   scm_c_define_gsubr("dot", 2, 0, 0, (void*)&dot_w);
   scm_c_define_gsubr("matmul", 2, 0, 0, (void*)&matmul_w);

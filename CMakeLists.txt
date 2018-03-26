@@ -1,7 +1,7 @@
 project(arrayfire-scm)
 cmake_minimum_required(VERSION 3.0)
 
-set(SRCS arrayfire_scm.c linear_algebra.c)
+set(SRCS arrayfire_scm.c linear_algebra.c construction.c)
 
 add_library(arrayfire-scm SHARED ${SRCS})
 find_package(PkgConfig REQUIRED)

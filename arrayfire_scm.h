@@ -27,7 +27,7 @@ along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 # define AS_API extern
 #endif
 
-static SCM afarray_type;
+extern SCM afarray_type;
 static SCM af_error;
 
 #endif	// arrayfire_scm_EXPORTS
