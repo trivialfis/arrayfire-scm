@@ -1,10 +1,20 @@
-This is an work-in-progress project for binding /arrayfire/ with /guile/.
+This is an work-in-progress project for binding /arrayfire/ with /guile/ Scheme.
 
 * Introduction
 I'm only doing this for fun, some basic blas and statistic operations are planed.
 
 * Current status
-Not working, NOT AT ALL.
+
+I didn't do any safe checking, so calling scheme procedure is not safer than
+calling c function directly. Loads of segfault await. :)
+
+** What's working
+  + Construct af_array from scheme array.
+  + Logical operations.
+  + Basic linear algebra functions.
+
+** What's not working
+   Anything else.
 
 * License
 GPL3+
