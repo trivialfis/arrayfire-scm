@@ -1,7 +1,9 @@
 project(arrayfire-scm)
 cmake_minimum_required(VERSION 3.0)
 
-add_library(arrayfire-scm SHARED arrayfire_scm.c)
+set(SRCS arrayfire_scm.c linear_algebra.c)
+
+add_library(arrayfire-scm SHARED ${SRCS})
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GUILE "guile-2.2")
 include_directories(${GUILE_INCLUDE_DIRS})

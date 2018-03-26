@@ -1,26 +1,34 @@
-#include <libguile.h>
-#include <arrayfire.h>
-
 #include "arrayfire_scm.h"
-
-struct array_warpper
-{
-  af_array ar;
-};
+#include "linear_algebra.h"
 
 static void finalize_afarray(SCM array)
 {
-  af_array ar = (af_array)scm_to_pointer(array);
+  printf("finalize array");
+  af_array ar = (af_array)scm_foreign_object_unsigned_ref(array, 0);
+  if (ar != NULL)
+    scm_foreign_object_unsigned_set_x(array, 0, -1);
   af_release_array(ar);
 }
 
-static SCM afarray_type;
+
+void init_afarray_type(void)
+{
+  SCM name, slots;
+  scm_t_struct_finalize finalizer;
+
+  name = scm_from_utf8_symbol("afarray");
+  slots = scm_list_1(scm_from_utf8_symbol("data"));
+  finalizer = finalize_afarray;
+
+  afarray_type =scm_make_foreign_object_type(name, slots, finalizer);
+}
 
 SCM randu_w(SCM _ndims, SCM _dims, SCM _dtype)
 {
   af_array out = 0;
   SCM dtype_scm = scm_symbol_to_string(_dtype);
   char *dtype = scm_to_locale_string(dtype_scm);
+
   unsigned ndims = scm_to_uint64(_ndims);
   SCM _listp = scm_list_p(_dims);
   SCM _dims_len = 0;
@@ -28,9 +36,13 @@ SCM randu_w(SCM _ndims, SCM _dims, SCM _dtype)
     {
       _dims_len = scm_length(_dims);
     }
-  if (!scm_equal_p(_ndims, _dims_len))
+  int dl_debug = scm_to_int(_dims_len);
+  int _ndl_debug = scm_to_int(_ndims);
+  if (scm_is_false(scm_equal_p(_ndims, _dims_len)))
     {
-      exit(1);
+      SCM message;
+      message = scm_from_utf8_string("Wrong dim.");
+      scm_throw(af_error, message);
     }
   int dims_len = scm_to_int(_dims_len);
   dim_t *dims = (dim_t*)malloc(sizeof(dim_t)*dims_len);
@@ -39,25 +51,26 @@ SCM randu_w(SCM _ndims, SCM _dims, SCM _dtype)
       SCM temp = scm_car(_dims);
       dims[i] = scm_to_int(temp);
     }
+
   af_err errno = af_randu(&out, ndims, dims, f32);
+  if (errno != AF_SUCCESS)
+    {
+      SCM message;
+      message = scm_from_utf8_string("af_randu failed.");
+      scm_throw(af_error, message);
+    }
   free(dims);
-  return scm_make_foreign_object_1(afarray_type, out);
+  SCM _ar = scm_make_foreign_object_1(afarray_type, (void*)out);
+  /* errno = af_print_array(out); */
+  /* if (errno != AF_SUCCESS) */
+  /*   printf("print error %d", errno); */
+  return _ar;
 }
 
-/* SCM make_constant(SCM _value, SCM _size, SCM _ndims) */
-/* { */
-/*   double value = scm_to_double(_value); */
-/*   unsigned int size = scm_to_int(_size); */
-/*   dim_t ndims = scm_to_long_long(_ndims); */
-/*   // af_array ar; */
-/*   struct array_warpper *ar; */
-/*   af::array temp = af::constant(value, ndims); */
-/*   ar->ar = new af::array{std::move(temp)}; */
-/*   // af_err errno = (af_err)af_constant(&ar, value, size, &ndims, f32); */
-/*   return scm_make_foreign_object_1(afarray_type, ar); */
-/* } */
-
-AS_API void init_type()
+AS_API void arrayfire_scm_init()
 {
+  init_afarray_type();
+
   scm_c_define_gsubr("randu", 3, 0, 0, (void*)&randu_w);
+  scm_c_define_gsubr("dot", 2, 0, 0, (void*)&dot_w);
 }
