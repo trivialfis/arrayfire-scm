@@ -1,4 +1,4 @@
-;;; Initialize arrayfire-scm.
+#!/usr/bin/env guile!#
 ;;; Copyright © 2018 Fis Trivial <ybbs.daans@hotmail.com>
 ;;;
 ;;; This file is part of arrayfire-scm.
@@ -16,16 +16,15 @@
 ;;; You should have received a copy of the GNU General Public License
 ;;; along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.
 
-(define-module (arrayfire)
-  #:export (print-array
-	    randu
-	    from-array
+(let ((cwd (getcwd)))
+  (set! %load-path (cons cwd %load-path)))
 
-	    afeq
+(use-modules (srfi srfi-64)
+	     (arrayfire))
 
-	    dot
-	    matmul
-	    transpose
-	    inverse))
+(test-begin "mathematic")
 
-(load-extension "libarrayfire-scm" "arrayfire_scm_init")
+(let ((a (from-array #2f32((1 2) (3 4)))))
+  (test-assert (afeq a a)))
+
+(test-end "mathematic")

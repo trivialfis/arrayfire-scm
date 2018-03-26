@@ -19,6 +19,7 @@ along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 #include "arrayfire_scm.h"
 #include "construction.h"
 #include "linear_algebra.h"
+#include "mathematic.h"
 
 SCM afarray_type;
 
@@ -61,7 +62,10 @@ AS_API void arrayfire_scm_init()
   scm_c_define_gsubr("randu", 3, 0, 0, (void*)&randu_w);
   scm_c_define_gsubr("from-array", 1, 0, 0, (void*)&from_scm_array);
 
+  scm_c_define_gsubr("afeq", 2, 1, 0, (void*)&eq_w);
+  
   scm_c_define_gsubr("dot", 2, 0, 0, (void*)&dot_w);
   scm_c_define_gsubr("matmul", 2, 0, 0, (void*)&matmul_w);
   scm_c_define_gsubr("transpose", 1, 0, 0, (void*)&transpose_w);
+  scm_c_define_gsubr("inverse", 1, 0, 0, (void*)&inverse_w);
 }
