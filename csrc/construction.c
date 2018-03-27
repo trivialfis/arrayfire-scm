@@ -42,11 +42,19 @@ void init_type_hash()
   scm_hash_set_x(TYPE_HASH, scm_symbol_hash(scm_c64), scm_from_int(c64));
 }
 
-SCM randu_w(SCM _ndims, SCM _dims, SCM _dtype) /* FIXME: _dtype is not used. */
+SCM randu_w(SCM _ndims, SCM _dims, SCM _dtype)
 {
   af_array out = 0;
-  SCM dtype_scm = scm_symbol_to_string(_dtype);
-  char *dtype = scm_to_locale_string(dtype_scm);
+
+  SCM hash_val = scm_hash_ref(TYPE_HASH, scm_symbol_hash(_dtype), SCM_BOOL_F);
+  if (scm_is_false(hash_val))
+    {
+      SCM message;
+      message = scm_from_utf8_string("Unknown type.");
+      scm_throw(af_error, message);
+    }
+  int _dtype_int = scm_to_int(hash_val);
+  af_dtype dtype = (af_dtype)_dtype_int;
 
   unsigned ndims = scm_to_uint64(_ndims);
   SCM _listp = scm_list_p(_dims);
@@ -69,7 +77,7 @@ SCM randu_w(SCM _ndims, SCM _dims, SCM _dtype) /* FIXME: _dtype is not used. */
       dims[i] = scm_to_int(temp);
     }
 
-  af_err errno = af_randu(&out, ndims, dims, f32);
+  af_err errno = af_randu(&out, ndims, dims, dtype);
   if (errno != AF_SUCCESS)
     {
       SCM message;
@@ -94,7 +102,6 @@ SCM from_scm_array(SCM ar)
   scm_array_get_handle(ar, &handle);
   SCM _dtype_scm = scm_array_type(ar);
 
-  /* int is_sym = scm_is_symbol(scm_string_to_symbol(scm_from_utf8_string("u32"))); */
   void* _content =  (void*)scm_array_handle_uniform_elements(&handle);
 
   size_t _ndims = scm_array_handle_rank(&handle);
