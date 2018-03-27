@@ -85,3 +85,10 @@ SCM save_array_w(SCM _index, SCM _key, SCM _arr, SCM _filename, SCM _append)
   scm_dynwind_end();
   return SCM_BOOL_T;
 }
+
+void init_io()
+{
+  scm_c_define_gsubr("load-image", 1, 1, 0, (void*)&load_image_w);
+  scm_c_define_gsubr("save-image", 2, 0, 0, (void*)&save_image_w);
+  scm_c_define_gsubr("save-array", 3, 1, 0, (void*)&save_array_w);
+}

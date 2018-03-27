@@ -95,3 +95,11 @@ SCM inverse_w(SCM _in)
   SCM result = scm_make_foreign_object_1(afarray_type, (af_array)out);
   return result;
 }
+
+void init_linear_algebra()
+{
+  scm_c_define_gsubr("dot", 2, 0, 0, (void*)&dot_w);
+  scm_c_define_gsubr("matmul", 2, 0, 0, (void*)&matmul_w);
+  scm_c_define_gsubr("transpose", 1, 0, 0, (void*)&transpose_w);
+  scm_c_define_gsubr("inverse", 1, 0, 0, (void*)&inverse_w);
+}

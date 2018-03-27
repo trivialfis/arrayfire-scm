@@ -20,16 +20,7 @@ along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 #define ARRAYFIRE_SCM_MATH_H
 
 #include "arrayfire_scm.h"
-SCM and_w(SCM _lhs, SCM _rhs, SCM batch_p);
-SCM bitand_w(SCM _lhs, SCM _rhs, SCM batch_p);
-SCM bitor_w(SCM _lhs, SCM _rhs, SCM batch_p);
-SCM bitxor_w(SCM _lhs, SCM _rhs, SCM batch_p);
-SCM eq_w(SCM _lhs, SCM _rhs, SCM batch_p);
-SCM ge_w(SCM _lhs, SCM _rhs, SCM batch_p);
-SCM gt_w(SCM _lhs, SCM _rhs, SCM batch_p);
-SCM le_w(SCM _lhs, SCM _rhs, SCM batch_p);
-SCM lt_w(SCM _lhs, SCM _rhs, SCM batch_p);
-SCM neq_w(SCM _lhs, SCM _rhs, SCM batch_p);
-SCM not_w(SCM _in);
+
+void init_mathematic();
 
 #endif

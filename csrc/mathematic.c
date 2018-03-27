@@ -105,3 +105,18 @@ SCM not_w(SCM _in)
   SCM result = scm_make_foreign_object_1(afarray_type, (af_array)out);
   return result;
 }
+
+void init_mathematic()
+{
+  scm_c_define_gsubr("afand", 2, 1, 0, (void*)&and_w);
+  scm_c_define_gsubr("afbitand", 2, 1, 0, (void*)&bitand_w);
+  scm_c_define_gsubr("afbitor", 2, 1, 0, (void*)&bitor_w);
+  scm_c_define_gsubr("afbitxor", 2, 1, 0, (void*)&bitxor_w);
+  scm_c_define_gsubr("afeq", 2, 1, 0, (void*)&eq_w);
+  scm_c_define_gsubr("afge", 2, 1, 0, (void*)&ge_w);
+  scm_c_define_gsubr("afgt", 2, 1, 0, (void*)&gt_w);
+  scm_c_define_gsubr("afle", 2, 1, 0, (void*)&le_w);
+  scm_c_define_gsubr("aflt", 2, 1, 0, (void*)&lt_w);
+  scm_c_define_gsubr("afneq", 2, 1, 0, (void*)&neq_w);
+  scm_c_define_gsubr("afnot", 1, 0, 0, (void*)&not_w);
+}
