@@ -10,7 +10,7 @@ set(SRCS
 
 add_library(arrayfire-scm SHARED ${SRCS})
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GUILE "guile-2.2")
+pkg_check_modules(GUILE REQUIRED "guile-2.2")
 include_directories(${GUILE_INCLUDE_DIRS})
 
 find_package(ArrayFire)
