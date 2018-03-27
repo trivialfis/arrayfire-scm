@@ -15,28 +15,29 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 
-#include "array.h"
+#include "index.h"
 
-SCM get_dims_w(SCM _in)
+SCM lookup_w(SCM _in, SCM _indices_ar, SCM _dim)
 {
   scm_assert_foreign_object_type(afarray_type, _in);
-  dim_t d0, d1, d2, d3;
-  dim_t _dims[4];
+  scm_assert_foreign_object_type(afarray_type, _indices_ar);
   af_array in = scm_foreign_object_ref(_in, 0);
-  af_err errno = af_get_dims(&_dims[0], &_dims[1], &_dims[2], &_dims[3], in);
+  af_array indices = scm_foreign_object_ref(_indices_ar, 0);
+  dim_t dim = scm_to_long_long(_dim);
+  af_array out = 0;
+  af_err errno = af_lookup(&out, in, indices, dim);
   if (errno != AF_SUCCESS)
     {
-      SCM message = scm_from_utf8_string("Get dims failed.\n");
+      SCM message;
+      fprintf(stderr, "Errno: %d\n", errno);
+      message = scm_from_utf8_string("lookup_w failed.\n");
       scm_throw(af_error, message);
     }
-  SCM dims[4];
-  for (int i = 0; i < 4; ++i)
-    dims[i] = scm_from_long_long(_dims[i]);
-  SCM result = scm_list_4(dims[0], dims[1], dims[2], dims[3]);
-  return result;
+  SCM result = scm_make_foreign_object_1(afarray_type, (af_array)out);
+  return result; 
 }
 
-void init_array()
+void init_index()
 {
-  scm_c_define_gsubr("get-dims", 1, 0, 0, (void*)&get_dims_w);
+  scm_c_define_gsubr("lookup", 3, 0, 0, (void*)&lookup_w);
 }

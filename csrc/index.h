@@ -15,11 +15,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 
-#ifndef AF_SCM_IMAGE_H
-#define AF_SCM_IMAGE_H
+#ifndef AF_SCM_INDEX_H
+#define AF_SCM_INDEX_H
 
 #include "arrayfire_scm.h"
 
-void init_io();
+void init_index();
 
 #endif

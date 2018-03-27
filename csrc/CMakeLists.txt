@@ -4,6 +4,7 @@ set(SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/construction.c
   ${CMAKE_CURRENT_SOURCE_DIR}/mathematic.c
   ${CMAKE_CURRENT_SOURCE_DIR}/io.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/index.c
   ${CMAKE_CURRENT_SOURCE_DIR}/array.c
   ${CMAKE_CURRENT_SOURCE_DIR}/statistics.c)
 

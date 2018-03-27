@@ -20,6 +20,7 @@ along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 #include "construction.h"
 #include "linear_algebra.h"
 #include "mathematic.h"
+#include "index.h"
 #include "io.h"
 #include "array.h"
 #include "statistics.h"
@@ -35,7 +36,6 @@ static void finalize_afarray(SCM array)
   af_release_array(ar);
 }
 
-
 void init_afarray_type(void)
 {
   SCM name, slots;
@@ -48,7 +48,6 @@ void init_afarray_type(void)
   afarray_type =scm_make_foreign_object_type(name, slots, finalizer);
 }
 
-
 SCM print_array_w(SCM ar)
 {
   af_array value = scm_foreign_object_ref(ar, 0);
@@ -56,14 +55,31 @@ SCM print_array_w(SCM ar)
   return SCM_BOOL_T;
 }
 
+SCM info_w()
+{
+  af_err _errno = af_info();
+  SCM errno = scm_from_int(_errno);
+  return errno;
+}
+
+SCM init_w()
+{
+  af_err _errno = af_init();
+  SCM errno = scm_from_int(_errno);
+  return errno;
+}
+
 AS_API void arrayfire_scm_init()
 {
   init_afarray_type();
 
   scm_c_define_gsubr("print-array", 1, 0, 0, (void*)&print_array_w);
+  scm_c_define_gsubr("af-info", 0, 0, 0, (void*)&info_w);
+  scm_c_define_gsubr("af-init", 0, 0, 0, (void*)&init_w);
 
   init_array();
   init_constructor();
+  init_index();
   init_io();
   init_linear_algebra();
   init_mathematic();
