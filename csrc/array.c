@@ -36,7 +36,21 @@ SCM get_dims_w(SCM _in)
   return result;
 }
 
+/* SCM get_type_w */
+/* SCM is_bool_w */
+
+SCM is_floating_w(SCM _in)
+{
+  scm_assert_foreign_object_type(afarray_type, _in);
+  af_array in = scm_foreign_object_ref(_in, 0);
+  bool is_floating = true;
+  af_is_floating(&is_floating, in);
+  SCM result = scm_from_bool(is_floating);
+  return result;
+}
+
 void init_array()
 {
-  scm_c_define_gsubr("get-dims", 1, 0, 0, (void*)&get_dims_w);
+  scm_c_define_gsubr("af-get-dims", 1, 0, 0, (void*)&get_dims_w);
+  scm_c_define_gsubr("af-floating-p", 1, 0, 0, (void*)&is_floating_w);
 }
