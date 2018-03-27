@@ -95,7 +95,6 @@ SCM from_scm_array(SCM ar)
   SCM _dtype_scm = scm_array_type(ar);
 
   /* int is_sym = scm_is_symbol(scm_string_to_symbol(scm_from_utf8_string("u32"))); */
-
   void* _content =  (void*)scm_array_handle_uniform_elements(&handle);
 
   size_t _ndims = scm_array_handle_rank(&handle);
@@ -120,7 +119,6 @@ SCM from_scm_array(SCM ar)
   int _dtype_int = scm_to_int(hash_val);
   af_dtype _dtype = (af_dtype)_dtype_int;
   errno = af_create_array(&out, _content, _ndims, dims, _dtype);
-
   if (errno != AF_SUCCESS)
     {
       SCM message;

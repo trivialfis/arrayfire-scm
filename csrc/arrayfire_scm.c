@@ -21,6 +21,8 @@ along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 #include "linear_algebra.h"
 #include "mathematic.h"
 #include "io.h"
+#include "array.h"
+#include "statistics.h"
 
 SCM afarray_type;
 
@@ -83,4 +85,7 @@ AS_API void arrayfire_scm_init()
   scm_c_define_gsubr("load-image", 1, 1, 0, (void*)&load_image_w);
   scm_c_define_gsubr("save-image", 2, 0, 0, (void*)&save_image_w);
   scm_c_define_gsubr("save-array", 3, 1, 0, (void*)&save_array_w);
+
+  init_array();
+  init_statistics();
 }

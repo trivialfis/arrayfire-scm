@@ -3,7 +3,9 @@ set(SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/linear_algebra.c
   ${CMAKE_CURRENT_SOURCE_DIR}/construction.c
   ${CMAKE_CURRENT_SOURCE_DIR}/mathematic.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/io.c)
+  ${CMAKE_CURRENT_SOURCE_DIR}/io.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/array.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/statistics.c)
 
 add_library(arrayfire-scm SHARED ${SRCS})
 find_package(PkgConfig REQUIRED)
