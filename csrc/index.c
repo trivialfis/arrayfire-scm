@@ -43,11 +43,35 @@ SCM seq_from_list(SCM _list)
       scm_throw(af_error, message);
     }
   af_seq *_seq = (struct af_seq *)scm_gc_malloc(sizeof(af_seq), "seq");
-  SCM seq = scm_make_foreign_object_3(af_seq_type,
-				      scm_car(_list),
-				      scm_cadr(_list),
-				      scm_caddr(_list));
+  uint beg = scm_to_uint(scm_car(_list));
+  uint end = scm_to_uint(scm_cadr(_list));
+  uint step = scm_to_uint(scm_caddr(_list));
+
+  _seq->begin = beg;
+  _seq->end = end;
+  _seq->step = step;
+
+  SCM seq = scm_make_foreign_object_1(af_seq_type, _seq);
   return seq;
+}
+
+SCM index_w(SCM _in, SCM _ndims, SCM _index)
+{
+  scm_assert_foreign_object_type(afarray_type, _in);
+  scm_assert_foreign_object_type(af_seq_type, _index);
+  af_array in = scm_foreign_object_ref(_in, 0);
+
+  const af_seq * const seq = (struct af_seq*)scm_foreign_object_ref(_index, 0);
+  const unsigned ndims = scm_to_uint(_ndims);
+  af_array out = 0;
+  af_err errno = af_index(&out, in, ndims, seq);
+  if (errno != AF_SUCCESS)
+    {
+      SCM message = scm_from_utf8_string("af_index failed.");
+      scm_throw(af_error, message);
+    }
+  SCM result = scm_make_foreign_object_1(afarray_type, (af_array)out);
+  return result;
 }
 
 SCM lookup_w(SCM _in, SCM _indices_ar, SCM _dim)
@@ -67,12 +91,13 @@ SCM lookup_w(SCM _in, SCM _indices_ar, SCM _dim)
       scm_throw(af_error, message);
     }
   SCM result = scm_make_foreign_object_1(afarray_type, (af_array)out);
-  return result; 
+  return result;
 }
 
 void init_index()
 {
   init_af_seq_type();
   scm_c_define_gsubr("lookup", 3, 0, 0, (void*)&lookup_w);
+  scm_c_define_gsubr("index", 3, 0, 0, (void*)&index_w);
   scm_c_define_gsubr("seq-from-list", 1, 0, 0, (void*)&seq_from_list);
 }

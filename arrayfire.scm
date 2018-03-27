@@ -24,6 +24,7 @@
 	    get-dims
 
 	    lookup
+	    index
 	    seq-from-list
 
 	    mean

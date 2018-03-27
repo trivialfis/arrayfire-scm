@@ -27,5 +27,8 @@
 (test-assert "seq-from-list" (seq-from-list '(1 4 2)))
 (test-assert "lookup" (lookup (from-array #2f32((1 3) (4 5)))
 			      (from-array #u32(1 1)) 0))
+(test-assert "index" (get-dims (index (randu 2 '(1024 1024) 'f64)
+				      1
+				      (seq-from-list '(0 2048 8)))))
 
 (test-end "index-test")
