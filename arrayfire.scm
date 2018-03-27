@@ -25,6 +25,7 @@
 
 	    lookup
 	    index
+	    index-gen
 	    seq-from-list
 
 	    mean
