@@ -17,6 +17,39 @@ along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 
 #include "index.h"
 
+SCM af_seq_type;
+
+void init_af_seq_type(void)
+{
+  SCM name, slots;
+  scm_t_struct_finalize finalizer = NULL;
+
+  name = scm_from_utf8_symbol("seq");
+  SCM beg = scm_from_utf8_symbol("begin");
+  SCM end = scm_from_utf8_symbol("end");
+  SCM step = scm_from_utf8_symbol("step");
+  slots = scm_list_3(beg, end, step);
+
+  af_seq_type = scm_make_foreign_object_type(name, slots, finalizer);
+}
+
+SCM seq_from_list(SCM _list)
+{
+  SCM _len = scm_length(_list);
+  size_t len = scm_to_size_t(_len);
+  if (len != 3)
+    {
+      SCM message = scm_from_utf8_string("Wrong length of seq.");
+      scm_throw(af_error, message);
+    }
+  af_seq *_seq = (struct af_seq *)scm_gc_malloc(sizeof(af_seq), "seq");
+  SCM seq = scm_make_foreign_object_3(af_seq_type,
+				      scm_car(_list),
+				      scm_cadr(_list),
+				      scm_caddr(_list));
+  return seq;
+}
+
 SCM lookup_w(SCM _in, SCM _indices_ar, SCM _dim)
 {
   scm_assert_foreign_object_type(afarray_type, _in);
@@ -39,5 +72,7 @@ SCM lookup_w(SCM _in, SCM _indices_ar, SCM _dim)
 
 void init_index()
 {
+  init_af_seq_type();
   scm_c_define_gsubr("lookup", 3, 0, 0, (void*)&lookup_w);
+  scm_c_define_gsubr("seq-from-list", 1, 0, 0, (void*)&seq_from_list);
 }
