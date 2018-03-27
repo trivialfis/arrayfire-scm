@@ -29,7 +29,7 @@ SCM afarray_type;
 
 static void finalize_afarray(SCM array)
 {
-  printf("finalize array");
+  fprintf(stderr, "finalize array.\n");
   af_array ar = (af_array)scm_foreign_object_unsigned_ref(array, 0);
   if (ar != NULL)
     scm_foreign_object_unsigned_set_x(array, 0, -1);
