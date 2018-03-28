@@ -16,5 +16,20 @@ calling c function directly. Loads of segfault await. :)
 ** What's not working
    Anything else.
 
+I wanted to use guile's ffi directly, like arrayfire-python which uses ctype to
+load libaf* without writing a single line of c code. But it seems fairly hard to
+be done in guile. In arrayfire, functions uses pointer to pointer extensively,
+and there is need to convert scheme list and array to c types, c array for
+example.
+So wrap things up, if I want to eliminate the need of writing c wrapper code in
+the future, I need to define a set of methods for converting between scheme and
+c types:
+    + void**
+    + seq (struct)
+    + dims (array)
+
+And I need to figure how to make the two different memory management system
+compatible. Is JIT from arrayfire is a problem?
+
 * License
 GPL3+
