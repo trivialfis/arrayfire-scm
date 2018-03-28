@@ -16,6 +16,7 @@ calling c function directly. Loads of segfault await. :)
 ** What's not working
    Anything else.
 
+
 I wanted to use guile's ffi directly, like arrayfire-python which uses ctype to
 load libaf* without writing a single line of c code. But it seems fairly hard to
 be done in guile. In arrayfire, functions uses pointer to pointer extensively,
@@ -30,6 +31,17 @@ c types:
 
 And I need to figure how to make the two different memory management system
 compatible. Is JIT from arrayfire is a problem?
+
+
+
+After moving code from c to scheme (if feasible), maybe I can define a monad
+representing backend, something like 
+#+BEGIN_SRC scheme
+  (define (Array val)			; The unit function.
+    (lambda (back)
+      (cons back val)))
+#+END_SRC
+But forcing the so called ``pure functional`` seems religious now.
 
 * License
 GPL3+
