@@ -10,6 +10,8 @@
 
 (define-generic dot)
 (define-generic matmul)
+(define-generic inverse)
+(define-generic transpose)
 
 (define-method (dot (x <Array>) (y <Array>))
   (let ((x-dims (af-get-dims (get-data x)))
