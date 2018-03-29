@@ -2,15 +2,16 @@
 (let ((cwd (getcwd)))
   (set! %load-path (cons cwd %load-path)))
 
-(use-modules (srfi srfi-1)
-	     (ice-9 format)
-	     (oop goops)
-	     (arrayfire))
+(define-module (arrayfire ling)
+  #:use-module (srfi srfi-1)
+  #:use-module (ice-9 format)
+  #:use-module (oop goops)
+  #:use-moulde (arrayfire library))
 
 (define-generic dot)
 (define-generic matmul)
 
-(define-method (dot (x <afarray>) (y <afarray>))
+(define-method (dot (x <Array>) (y <Array>))
   (let ((x-dims (af-get-dims (get-data x)))
 	(y-dims (af-get-dims (get-data y)))
 	(x-data (get-data x))
@@ -25,15 +26,15 @@
 	     "dot applies only to array with floating point values."))
     (dot x-data y-data)))
 
-(define-method (matmul (x <afarray>) (y <afarray>))
+(define-method (matmul (x <Array>) (y <Array>))
   (let ((x-data (get-data x))
 	(y-data (get-data y)))
     (matmul x-data y-data)))
 
-(define-method (inverse (x <afarray>))
+(define-method (inverse (x <Array>))
   (let ((x-data (get-data x)))
     (inverse x-data)))
 
-(define-method (transpose (x <afarray>))
+(define-method (transpose (x <Array>))
   (let ((x-data (get-data x)))
     (transpose x-data)))

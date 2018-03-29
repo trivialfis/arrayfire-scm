@@ -20,14 +20,14 @@
   (set! %load-path (cons cwd %load-path)))
 
 (use-modules (srfi srfi-64)
-	     (arrayfire))
+	     (arrayfire library))
 
 (test-begin "index-test")
 
 (test-assert "seq-from-list" (seq-from-list '(1 4 2)))
-(test-assert "lookup" (lookup (from-array #2f32((1 3) (4 5)))
-			      (from-array #u32(1 1)) 0))
-(test-assert "index" (get-dims (index (randu 2 '(1024 1024) 'f64)
+(test-assert "lookup" (lookup (af-from-array #2f32((1 3) (4 5)))
+			      (af-from-array #u32(1 1)) 0))
+(test-assert "index" (af-get-dims (index (af-randu 2 '(1024 1024) 'f64)
 				      1
 				      (seq-from-list '(0 2048 8)))))
 

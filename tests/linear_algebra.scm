@@ -20,14 +20,14 @@
   (set! %load-path (cons cwd %load-path)))
 
 (use-modules (srfi srfi-64)
-	     (arrayfire)
+	     (arrayfire library)
 	     (oop goops))
 
 (test-begin "linear-algebra")
 
-(let ((a (from-array #2f32((1.0 3.3) (5 11))))
-      (b (from-array #f64(1 3 4)))
-      (c (make <afarray> #:data (from-array #f32(1 2 3)))))
+(let ((a (af-from-array #2f32((1.0 3.3) (5 11))))
+      (b (af-from-array #f64(1 3 4)))
+      (c (make <Array> #:data (af-from-array #f32(1 2 3)))))
   (test-assert (inverse a))
   (test-assert (transpose a))
   (test-assert (dot b b))

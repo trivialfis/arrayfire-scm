@@ -20,15 +20,20 @@
   (set! %load-path (cons cwd %load-path)))
 
 (use-modules (srfi srfi-64)
-	     (arrayfire))
+	     (oop goops)
+	     (arrayfire library))
 
 (define-public (test-basic)
   (test-begin "basic-test")
 
-  (test-assert "from-array:vec" (from-array #u32(1 2 4)))
-  (test-assert "from-array:mat" (from-array #2f32((1 2) (4 5) (7 9))))
-  (test-assert "print-array" (print-array (from-array #s16(1 2 3))))
-  (test-assert "randu" (randu 2 '(3 3) 'f32))
+  (test-assert "af-from-array:vec" (af-from-array #u32(1 2 4)))
+  (test-assert "af-from-array:mat" (af-from-array #2f32((1 2) (4 5) (7 9))))
+  (test-assert "af-randu"          (af-randu 2 '(3 3) 'f32))
+  (test-assert "print-array"    (print-array (af-from-array #s16(1 2 3))))
+  (let ((ar (make <Array> #:data (af-from-array #s16(1 2 3)))))
+    (test-assert "display" (display ar))) ; FIXME: How to obtain the generic method?
+  
 
   (test-end "basic-test"))
+
 (test-basic)

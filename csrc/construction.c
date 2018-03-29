@@ -144,6 +144,6 @@ SCM from_scm_array(SCM ar)
 void init_constructor()
 {
   init_type_hash();
-  scm_c_define_gsubr("randu", 3, 0, 0, (void*)&randu_w);
-  scm_c_define_gsubr("from-array", 1, 0, 0, (void*)&from_scm_array);
+  scm_c_define_gsubr("af-randu", 3, 0, 0, (void*)&randu_w);
+  scm_c_define_gsubr("af-from-array", 1, 0, 0, (void*)&from_scm_array);
 }

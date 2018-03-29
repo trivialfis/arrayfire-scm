@@ -20,12 +20,12 @@
   (set! %load-path (cons cwd %load-path)))
 
 (use-modules (srfi srfi-64)
-	     (arrayfire))
+	     (arrayfire library))
 
 (test-begin "mathematic")
 
-(let ((a (from-array #2f32((1 2) (3 4))))
-      (b (from-array #2u16((1 2) (3 4)))))
+(let ((a (af-from-array #2f32((1 2) (3 4))))
+      (b (af-from-array #2u16((1 2) (3 4)))))
   (test-assert (afand a a))
   (test-assert (afbitand b b))
   (test-assert (afbitor b b))
