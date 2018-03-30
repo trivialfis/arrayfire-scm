@@ -36,12 +36,12 @@
 
 	    af-mean
 
-	    afand   afbitand
-	    afbitor afbitxor
-	    afeq    afge
-	    afgt    afle
-	    aflt    afneq
-	    afnot
+	    af-and   af-bitand
+	    af-bitor af-bitxor
+	    af-eq    af-ge
+	    af-gt    af-le
+	    af-lt    af-neq
+	    af-not
 
 	    af-dot       af-matmul
 	    af-transpose af-inverse

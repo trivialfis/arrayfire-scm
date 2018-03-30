@@ -108,15 +108,15 @@ SCM not_w(SCM _in)
 
 void init_mathematic()
 {
-  scm_c_define_gsubr("afand", 2, 1, 0, (void*)&and_w);
-  scm_c_define_gsubr("afbitand", 2, 1, 0, (void*)&bitand_w);
-  scm_c_define_gsubr("afbitor", 2, 1, 0, (void*)&bitor_w);
-  scm_c_define_gsubr("afbitxor", 2, 1, 0, (void*)&bitxor_w);
-  scm_c_define_gsubr("afeq", 2, 1, 0, (void*)&eq_w);
-  scm_c_define_gsubr("afge", 2, 1, 0, (void*)&ge_w);
-  scm_c_define_gsubr("afgt", 2, 1, 0, (void*)&gt_w);
-  scm_c_define_gsubr("afle", 2, 1, 0, (void*)&le_w);
-  scm_c_define_gsubr("aflt", 2, 1, 0, (void*)&lt_w);
-  scm_c_define_gsubr("afneq", 2, 1, 0, (void*)&neq_w);
-  scm_c_define_gsubr("afnot", 1, 0, 0, (void*)&not_w);
+  scm_c_define_gsubr("af-and", 2, 1, 0, (void*)&and_w);
+  scm_c_define_gsubr("af-bitand", 2, 1, 0, (void*)&bitand_w);
+  scm_c_define_gsubr("af-bitor", 2, 1, 0, (void*)&bitor_w);
+  scm_c_define_gsubr("af-bitxor", 2, 1, 0, (void*)&bitxor_w);
+  scm_c_define_gsubr("af-eq", 2, 1, 0, (void*)&eq_w);
+  scm_c_define_gsubr("af-ge", 2, 1, 0, (void*)&ge_w);
+  scm_c_define_gsubr("af-gt", 2, 1, 0, (void*)&gt_w);
+  scm_c_define_gsubr("af-le", 2, 1, 0, (void*)&le_w);
+  scm_c_define_gsubr("af-lt", 2, 1, 0, (void*)&lt_w);
+  scm_c_define_gsubr("af-neq", 2, 1, 0, (void*)&neq_w);
+  scm_c_define_gsubr("af-not", 1, 0, 0, (void*)&not_w);
 }
