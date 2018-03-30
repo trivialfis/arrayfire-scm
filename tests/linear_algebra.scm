@@ -20,6 +20,7 @@
   (set! %load-path (cons cwd %load-path)))
 
 (use-modules (srfi srfi-64)
+	     (arrayfire array)
 	     (arrayfire library)
 	     (oop goops))
 
@@ -31,7 +32,7 @@
   (test-assert (inverse a))
   (test-assert (transpose a))
   (test-assert (dot b b))
-  (test-assert (dot c c))
+  (test-assert (dot c c))		; FIXME: dot -> af-dot
   (test-error (dot c b)))
 
 (test-end "linear-algebra")

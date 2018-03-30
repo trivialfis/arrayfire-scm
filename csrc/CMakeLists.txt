@@ -18,3 +18,8 @@ include_directories(${ArrayFire_INCLUDE_DIRS})
 
 target_link_libraries(arrayfire-scm ${GUILE_LIBRARIES})
 target_link_libraries(arrayfire-scm ${ArrayFire_LIBRARIES})
+
+include(GNUInstallDirs)
+
+install(TARGETS arrayfire-scm LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  # PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

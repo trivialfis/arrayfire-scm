@@ -1,9 +1,8 @@
 #include "construction.h"
 
-
 static SCM TYPE_HASH = 0;
 
-void init_type_hash()
+static void init_type_hash()
 {
   if (TYPE_HASH != 0)
     {
@@ -42,10 +41,9 @@ void init_type_hash()
   scm_hash_set_x(TYPE_HASH, scm_symbol_hash(scm_c64), scm_from_int(c64));
 }
 
-SCM randu_w(SCM _ndims, SCM _dims, SCM _dtype)
-{
-  af_array out = 0;
 
+static af_dtype scm_to_af_dtype(SCM _dtype)
+{
   SCM hash_val = scm_hash_ref(TYPE_HASH, scm_symbol_hash(_dtype), SCM_BOOL_F);
   if (scm_is_false(hash_val))
     {
@@ -55,14 +53,26 @@ SCM randu_w(SCM _ndims, SCM _dims, SCM _dtype)
     }
   int _dtype_int = scm_to_int(hash_val);
   af_dtype dtype = (af_dtype)_dtype_int;
+  return dtype;
+}
 
-  unsigned ndims = scm_to_uint64(_ndims);
+
+static dim_t* handle_dims(SCM _dims, SCM _ndims)
+{
   SCM _listp = scm_list_p(_dims);
   SCM _dims_len = 0;
+  unsigned ndims = scm_to_uint64(_ndims);
   if (scm_is_true(_listp))
     {
       _dims_len = scm_length(_dims);
     }
+  else
+    {
+      SCM message;
+      message = scm_from_utf8_string("Expecting list as dims.");
+      scm_throw(af_error, message);
+    }
+
   if (scm_is_false(scm_equal_p(_ndims, _dims_len)))
     {
       SCM message;
@@ -76,7 +86,17 @@ SCM randu_w(SCM _ndims, SCM _dims, SCM _dtype)
       SCM temp = scm_car(_dims);
       dims[i] = scm_to_int(temp);
     }
+  return dims;
+}
 
+
+SCM randu_w(SCM _ndims, SCM _dims, SCM _dtype)
+{
+  af_dtype dtype = scm_to_af_dtype(_dtype);
+  unsigned ndims = scm_to_uint64(_ndims);
+  dim_t *dims = handle_dims(_dims, _ndims);
+
+  af_array out = 0;
   af_err errno = af_randu(&out, ndims, dims, dtype);
   if (errno != AF_SUCCESS)
     {
@@ -141,9 +161,78 @@ SCM from_scm_array(SCM ar)
   return _ar;
 }
 
+
+SCM constant_w(SCM _val, SCM _ndims, SCM _dims, SCM _dtype)
+{
+  double value = scm_to_double(_val);
+  af_dtype dtype = scm_to_af_dtype(_dtype);
+  unsigned ndims = scm_to_uint64(_ndims);
+
+  dim_t *dims = handle_dims(_dims, _ndims);
+
+  af_array out = 0;
+  af_err errno = af_constant(&out, value, ndims, dims, dtype);
+
+  free(dims);
+
+  SCM _ar = scm_make_foreign_object_1(afarray_type, (void*)out);
+  return _ar;
+}
+
+
+SCM assign_gen_w(SCM _lhs, SCM _ndims, SCM _indices, SCM _rhs)
+{
+  scm_assert_foreign_object_type(afarray_type, _lhs);
+}
+
+
+SCM copy_array_w()
+{
+
+}
+
+
+SCM retain_array_w(SCM _in)
+{
+  scm_assert_foreign_object_type(afarray_type, _in);
+
+  af_array in = scm_foreign_object_ref(_in, 0);
+
+  af_array out = 0;
+  af_err errno = af_retain_array(&out, in);
+  SCM _ar = scm_make_foreign_object_1(afarray_type, (void*)out);
+  return _ar;
+}
+
+
+SCM create_handle_w(SCM _ndims, SCM _dims, SCM _dtype)
+{
+
+}
+
+
+SCM create_empty_array()
+{
+  af_array out = 0;
+  dim_t dims[] = {0, 1, 1, 1};
+  af_err errno =  af_create_handle(&out, AF_MAX_DIMS, dims, f32);
+  if (errno != AF_SUCCESS)
+    {
+      SCM message;
+      message = scm_from_utf8_string("af_create_handle failed.");
+      scm_throw(af_error, message);
+    }
+  SCM _ar = scm_make_foreign_object_1(afarray_type, (void*)out);
+  return _ar;
+}
+
+
 void init_constructor()
 {
   init_type_hash();
   scm_c_define_gsubr("af-randu", 3, 0, 0, (void*)&randu_w);
   scm_c_define_gsubr("af-from-array", 1, 0, 0, (void*)&from_scm_array);
+  scm_c_define_gsubr("af-constant", 4, 0, 0, (void*)&constant_w);
+  scm_c_define_gsubr("af-create-empty", 0, 0, 0, (void*)&create_empty_array);
+  scm_c_define_gsubr("af-retain-array", 1, 0, 0, (void*)&retain_array_w);
 }

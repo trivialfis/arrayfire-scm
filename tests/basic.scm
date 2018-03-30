@@ -21,6 +21,7 @@
 
 (use-modules (srfi srfi-64)
 	     (oop goops)
+	     (arrayfire array)
 	     (arrayfire library))
 
 (define-public (test-basic)
@@ -31,9 +32,12 @@
   (test-assert "af-randu"          (af-randu 2 '(3 3) 'f32))
   (test-assert "print-array"    (print-array (af-from-array #s16(1 2 3))))
   (let ((ar (make <Array> #:data (af-from-array #s16(1 2 3)))))
-    (test-assert "display" (display ar))) ; FIXME: How to obtain the generic method?
+    (test-assert "display" (display ar)) ; FIXME: How to obtain the generic method?
+    )
+  (test-assert "from <array>" (make-Array #:value #2f32((1 2) (3.0 4))))
+  (test-assert "from <real>" (make-Array #:value 3 #:dims '(1 2) #:dtype 'f32))
+  (test-error "from <real> without dims" (make-Array #:value 3))
   
-
   (test-end "basic-test"))
 
 (test-basic)

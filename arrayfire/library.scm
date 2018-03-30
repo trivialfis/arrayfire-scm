@@ -8,58 +8,37 @@
   #:use-module (ice-9 format)
   #:use-module (system foreign)
   #:export (print-array
+
 	    af-randu
 	    af-from-array
+	    af-create-empty
+	    af-retain-array
+	    af-constant
 
-	    af-get-dims
-	    af-floating-p
+	    af-get-dims af-floating-p
 
-	    lookup
-	    index
-	    index-gen
-	    seq-from-list
+	    lookup    index
+	    index-gen seq-from-list
 
 	    mean
 
-	    afand
-	    afbitand
-	    afbitor
-	    afbitxor
-	    afeq
-	    afge
-	    afgt
-	    afle
-	    aflt
-	    afneq
+	    afand   afbitand
+	    afbitor afbitxor
+	    afeq    afge
+	    afgt    afle
+	    aflt    afneq
 	    afnot
 
-	    dot
-	    matmul
-	    transpose
-	    inverse
+	    dot	      matmul
+	    transpose inverse
 
-	    load-image
-	    save-image
+	    load-image save-image
 	    save-array
 
-	    af-info
-	    af-init
-
-	    <Array>
-	    display
+	    af-info af-init
 	    ))
 
 (load-extension "libarrayfire-scm" "arrayfire_scm_init")
-
-
-(define-class <Array> ()
-  (data #:getter get-data
-	#:init-keyword #:data)
-  #:name "Array")
-
-(define-generic display)
-(define-method (dispaly (value <Array>))
-  (print-array (get-data value)))
 
 (define backend-strings '("cpu" "cuda" "opencl" "unified"))
 
