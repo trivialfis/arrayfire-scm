@@ -186,10 +186,10 @@ SCM assign_gen_w(SCM _lhs, SCM _ndims, SCM _indices, SCM _rhs)
 }
 
 
-SCM copy_array_w()
-{
+/* SCM copy_array_w() */
+/* { */
 
-}
+/* } */
 
 
 SCM retain_array_w(SCM _in)
@@ -205,10 +205,10 @@ SCM retain_array_w(SCM _in)
 }
 
 
-SCM create_handle_w(SCM _ndims, SCM _dims, SCM _dtype)
-{
+/* SCM create_handle_w(SCM _ndims, SCM _dims, SCM _dtype) */
+/* { */
 
-}
+/* } */
 
 
 SCM create_empty_array()

@@ -8,7 +8,7 @@ set(SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/array.c
   ${CMAKE_CURRENT_SOURCE_DIR}/statistics.c)
 
-add_library(arrayfire-scm SHARED ${SRCS})
+add_library(afs SHARED ${SRCS})
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GUILE REQUIRED "guile-2.2")
 include_directories(${GUILE_INCLUDE_DIRS})
@@ -16,10 +16,11 @@ include_directories(${GUILE_INCLUDE_DIRS})
 find_package(ArrayFire)
 include_directories(${ArrayFire_INCLUDE_DIRS})
 
-target_link_libraries(arrayfire-scm ${GUILE_LIBRARIES})
-target_link_libraries(arrayfire-scm ${ArrayFire_LIBRARIES})
+target_link_libraries(afs ${GUILE_LIBRARIES})
+target_link_libraries(afs ${ArrayFire_LIBRARIES})
 
 include(GNUInstallDirs)
 
-install(TARGETS arrayfire-scm LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
-  # PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS afs LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+# PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

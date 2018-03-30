@@ -1,6 +1,4 @@
 #!/usr/bin/env guile!#
-(let ((cwd (getcwd)))
-  (set! %load-path (cons cwd %load-path)))
 
 (define-module (arrayfire library)
   #:use-module (oop goops)
@@ -38,7 +36,7 @@
 	    af-info af-init
 	    ))
 
-(load-extension "libarrayfire-scm" "arrayfire_scm_init")
+(load-extension "libafs" "arrayfire_scm_init")
 
 (define backend-strings '("cpu" "cuda" "opencl" "unified"))
 

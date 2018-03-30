@@ -28,6 +28,6 @@ along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 #endif
 
 extern SCM afarray_type;
-static SCM af_error;
+extern SCM af_error;
 
 #endif	// arrayfire_scm_EXPORTS

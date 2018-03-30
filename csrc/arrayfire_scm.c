@@ -26,6 +26,7 @@ along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 #include "statistics.h"
 
 SCM afarray_type;
+SCM af_error;
 
 static void finalize_afarray(SCM array)
 {
@@ -45,7 +46,7 @@ void init_afarray_type(void)
   slots = scm_list_1(scm_from_utf8_symbol("data"));
   finalizer = finalize_afarray;
 
-  afarray_type =scm_make_foreign_object_type(name, slots, finalizer);
+  afarray_type = scm_make_foreign_object_type(name, slots, finalizer);
 }
 
 SCM print_array_w(SCM ar)

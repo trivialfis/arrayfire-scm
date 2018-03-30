@@ -39,6 +39,7 @@
   (test-assert (dot c c))
   (test-assert (matmul c c))
   (test-assert (matmul d d))
-  (test-assert (matmul d c)))		; FIXME
+  (test-assert (matmul d c))
+  )		; FIXME
 
 (test-end "linear-algebra")
