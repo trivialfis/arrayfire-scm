@@ -33,5 +33,5 @@ SCM mean_w(SCM _in, SCM _dim)
 
 void init_statistics()
 {
-  scm_c_define_gsubr("mean", 2, 0, 0, (void*)&mean_w);
+  scm_c_define_gsubr("af-mean", 2, 0, 0, (void*)&mean_w);
 }

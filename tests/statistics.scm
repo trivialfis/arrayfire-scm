@@ -21,26 +21,13 @@
 (use-modules (srfi srfi-64)
 	     (arrayfire array)
 	     (arrayfire library)
-	     (arrayfire ling)
+	     (arrayfire statistics)
 	     (oop goops))
 
-(test-begin "linear-algebra")
+(test-begin "statistics")
 
-(let ((a (af-from-array #2f32((1.0 3.3) (5 11))))
-      (b (af-from-array #f64(1 3 4)))
-      (c (make <Array> #:data (af-from-array #f32(1 2))))
-      (d (make-Array #:value #2f64((1 2) (4 5)))))
-  (test-assert (af-inverse a))
-  (test-assert (af-transpose a))
-  (test-assert (af-dot b b))
-  (test-error (af-dot c c))
-  (test-error (af-dot c b))
-  (test-assert (dot c c))
-  (test-assert "matmul vector" (matmul c c))
-  (test-assert "matmul matrix"
-    (let ((mat (make-Array #:value #2f64((1 2) (4 5)))))
-      (matmul mat mat)))
-  (test-error "matmul mismatch" (matmul d c)))
-  
+(let ((a (make-Array #:value #2f32((1 2) (4 5)))))
+  (display (class-of a))
+  (test-assert "mean" (mean a 0)))
 
-(test-end "linear-algebra")
+(test-end "statistics")

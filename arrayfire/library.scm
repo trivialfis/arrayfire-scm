@@ -34,7 +34,7 @@
 	    lookup    index
 	    index-gen seq-from-list
 
-	    mean
+	    af-mean
 
 	    afand   afbitand
 	    afbitor afbitxor
