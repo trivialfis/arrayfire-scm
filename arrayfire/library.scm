@@ -52,6 +52,7 @@
 	    af-info af-init
 
 	    AF-ERROR-CODE
+	    af-catch
 	    ))
 
 (load-extension "libafs" "arrayfire_scm_init")
@@ -81,6 +82,20 @@
     (503 . 'AF_ERR_ARR_BKND_MISMATCH)
     (998 . 'AF_ERR_INTERNAL)
     (999 . 'AF_ERR_UNKNOWN)))
+
+
+(define-syntax af-catch
+  (syntax-rules ()
+    ((af-catch fn)
+     (catch 'misc-error fn
+       (lambda (key . args)
+	 (let* ((len (length args))
+		(error (assoc-ref AF-ERROR-CODE
+				 (list-ref args
+					   (1- len))))
+		(body (list-head args (1- len)))
+		(new-args (append body error)))
+	   (throw key new-args)))))))
 
 
 (define (backend b)

@@ -27,7 +27,23 @@ along with arrayfire-scm.  If not, see <http://www.gnu.org/licenses/>.    */
 # define AS_API extern
 #endif
 
+#define STR_LINE(x) # x
+#define STR_LINE_(x) STR_LINE(x)
+#define AFS_LINE_ STR_LINE_(__LINE__)
+
 extern SCM afarray_type;
 extern SCM af_error;
+
+#define AFS_ASSERT(mesg, errno)						\
+  if (errno != AF_SUCCESS)						\
+    {									\
+      SCM message;							\
+      message = scm_from_utf8_string(mesg);				\
+      SCM _errno = scm_from_int((int) errno);				\
+      SCM data = scm_list_1(_errno);					\
+      SCM subr = scm_from_utf8_string("file: " __FILE__ " line: " AFS_LINE_); \
+      scm_error_scm(af_error, subr, message, SCM_BOOL_F, _errno);	\
+    }
+
 
 #endif	// arrayfire_scm_EXPORTS

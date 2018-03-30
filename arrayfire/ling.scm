@@ -55,18 +55,17 @@
     (if (and (equal? (cdr x-dims) '(1 1 1))
 	       (equal? (cdr y-dims) '(1 1 1)))
 	(dot x y)
-	(catch 'misc-error (lambda _ (af-matmul x-data y-data))
-	  (lambda (key . args)
-	    (display
-	     (assoc-ref AF-ERROR-CODE
-			(list-ref args
-				  (1- (length args))))))))))
+	
+	(af-catch (lambda _ (af-matmul x-data y-data))))))
 
 
 (define-method (inverse (x <Array>))
   (let ((x-data (get-data x)))
-    (af-inverse x-data)))
+    (af-catch
+     (lambda _ (af-inverse x-data)))))
+
 
 (define-method (transpose (x <Array>))
   (let ((x-data (get-data x)))
-    (af-transpose x-data)))
+    (af-catch
+     (lambda _ (af-transpose x-data)))))
