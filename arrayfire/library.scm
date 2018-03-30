@@ -50,11 +50,38 @@
 	    save-array
 
 	    af-info af-init
+
+	    AF-ERROR-CODE
 	    ))
 
 (load-extension "libafs" "arrayfire_scm_init")
 
 (define backend-strings '("cpu" "cuda" "opencl" "unified"))
+
+
+(define AF-ERROR-CODE
+  '((0   . 'AF_SUCCESS)
+    (101 . 'AF_ERR_NO_MEM)
+    (102 . 'AF_ERR_RUN_TIME)
+    (103 . 'AF_ERR_RUNTIME)
+    (201 . 'AF_ERR_INVALID_ARRAY)
+    (202 . 'AF_ERR_ARG)
+    (203 . 'AF_ERR_SIZE)
+    (204 . 'AF_ERR_TYPE)
+    (205 . 'AF_ERR_DIFF_TYPE)
+    (207 . 'AF_ERR_BATCH)
+    (208 . 'AF_ERR_DEVICE)
+    (301 . 'AF_ERR_NOT_SUPPORTED)
+    (302 . 'AF_ERR_NOT_CONFIGURED)
+    (303 . 'AF_ERR_NONFREE)
+    (401 . 'AF_ERR_NO_DBL)
+    (402 . 'AF_ERR_NO_GFX)
+    (501 . 'AF_ERR_LOAD_LIB)
+    (502 . 'AF_ERR_LOAD_SYM)
+    (503 . 'AF_ERR_ARR_BKND_MISMATCH)
+    (998 . 'AF_ERR_INTERNAL)
+    (999 . 'AF_ERR_UNKNOWN)))
+
 
 (define (backend b)
   (let ((lib "libaf"))

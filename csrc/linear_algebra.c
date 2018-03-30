@@ -57,11 +57,11 @@ SCM matmul_w(SCM _lhs, SCM _rhs)
     {
       SCM message;
       message = scm_from_utf8_string("af_matmul failed.\n");
-      scm_throw(af_error, message);
-      /* SCM _errno = scm_from_int((int)errno); */
-      /* SCM data = scm_list_1(_errno); */
-      /* SCM subr = scm_from_utf8_string("matmul"); */
-      /* scm_error_scm(af_error, subr, message, SCM_BOOL_F, _errno); */
+      /* scm_throw(af_error, message); */
+      SCM _errno = scm_from_int((int)errno);
+      SCM data = scm_list_1(_errno);
+      SCM subr = scm_from_utf8_string("matmul");
+      scm_error_scm(af_error, subr, message, SCM_BOOL_F, _errno);
     }
   SCM result = scm_make_foreign_object_1(afarray_type, (af_array)out);
   return result;

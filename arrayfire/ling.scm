@@ -55,7 +55,12 @@
     (if (and (equal? (cdr x-dims) '(1 1 1))
 	       (equal? (cdr y-dims) '(1 1 1)))
 	(dot x y)
-	(af-matmul x-data y-data))))
+	(catch 'misc-error (lambda _ (af-matmul x-data y-data))
+	  (lambda (key . args)
+	    (display
+	     (assoc-ref AF-ERROR-CODE
+			(list-ref args
+				  (1- (length args))))))))))
 
 
 (define-method (inverse (x <Array>))

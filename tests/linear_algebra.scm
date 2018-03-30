@@ -37,8 +37,12 @@
   (test-error (af-dot c c))
   (test-error (af-dot c b))
   (test-assert (dot c c))
-  (test-assert (matmul c c))
-  (test-assert (matmul d d))
+  (test-assert "matmul vector"(matmul c c))
+  (test-assert "matmul vector2"
+    (let ((mat (make-Array #:value #2f64((1 2) (4 5)))))
+      (matmul mat mat)))
+  (test-assert "matmul mismatch" (matmul d c))
+  (test-assert "matmul matrix")
   (test-assert (matmul d c))
   )		; FIXME
 

@@ -23,7 +23,8 @@
   #:export (<Array>
 	    make-Array
 	    get-data
-	    display))
+	    ;; display
+	    ))
 
 
 (define-class <Array> ()
