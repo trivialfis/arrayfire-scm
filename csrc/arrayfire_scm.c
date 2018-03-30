@@ -72,6 +72,7 @@ SCM init_w()
 AS_API void arrayfire_scm_init()
 {
   init_afarray_type();
+  af_error = scm_string_to_symbol(scm_from_utf8_string("misc-error"));
 
   scm_c_define_gsubr("print-array", 1, 0, 0, (void*)&print_array_w);
   scm_c_define_gsubr("af-info", 0, 0, 0, (void*)&info_w);

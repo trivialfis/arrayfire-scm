@@ -98,8 +98,8 @@ SCM inverse_w(SCM _in)
 
 void init_linear_algebra()
 {
-  scm_c_define_gsubr("dot", 2, 0, 0, (void*)&dot_w);
-  scm_c_define_gsubr("matmul", 2, 0, 0, (void*)&matmul_w);
-  scm_c_define_gsubr("transpose", 1, 0, 0, (void*)&transpose_w);
-  scm_c_define_gsubr("inverse", 1, 0, 0, (void*)&inverse_w);
+  scm_c_define_gsubr("af-dot", 2, 0, 0, (void*)&dot_w);
+  scm_c_define_gsubr("af-matmul", 2, 0, 0, (void*)&matmul_w);
+  scm_c_define_gsubr("af-transpose", 1, 0, 0, (void*)&transpose_w);
+  scm_c_define_gsubr("af-inverse", 1, 0, 0, (void*)&inverse_w);
 }

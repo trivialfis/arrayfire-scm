@@ -22,17 +22,23 @@
 (use-modules (srfi srfi-64)
 	     (arrayfire array)
 	     (arrayfire library)
+	     (arrayfire ling)
 	     (oop goops))
 
 (test-begin "linear-algebra")
 
 (let ((a (af-from-array #2f32((1.0 3.3) (5 11))))
       (b (af-from-array #f64(1 3 4)))
-      (c (make <Array> #:data (af-from-array #f32(1 2 3)))))
-  (test-assert (inverse a))
-  (test-assert (transpose a))
-  (test-assert (dot b b))
-  (test-assert (dot c c))		; FIXME: dot -> af-dot
-  (test-error (dot c b)))
+      (c (make <Array> #:data (af-from-array #f32(1 2))))
+      (d (make-Array #:value #2f64((1 2) (4 5)))))
+  (test-assert (af-inverse a))
+  (test-assert (af-transpose a))
+  (test-assert (af-dot b b))
+  (test-error (af-dot c c))
+  (test-error (af-dot c b))
+  (test-assert (dot c c))
+  (test-assert (matmul c c))
+  (test-assert (matmul d d))
+  (test-assert (matmul d c)))		; FIXME
 
 (test-end "linear-algebra")

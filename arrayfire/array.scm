@@ -4,6 +4,7 @@
   #:use-module (arrayfire library)
   #:export (<Array>
 	    make-Array
+	    get-data
 	    display))
 
 

@@ -29,8 +29,8 @@
 	    aflt    afneq
 	    afnot
 
-	    dot	      matmul
-	    transpose inverse
+	    af-dot       af-matmul
+	    af-transpose af-inverse
 
 	    load-image save-image
 	    save-array

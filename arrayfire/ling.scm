@@ -1,12 +1,15 @@
 #!/usr/bin/env guile!#
-(let ((cwd (getcwd)))
-  (set! %load-path (cons cwd %load-path)))
 
 (define-module (arrayfire ling)
   #:use-module (srfi srfi-1)
   #:use-module (ice-9 format)
   #:use-module (oop goops)
-  #:use-moulde (arrayfire library))
+  #:use-module (arrayfire array)
+  #:use-module (arrayfire library)
+  #:export (dot
+	    matmul
+	    inverse
+	    transpose))
 
 (define-generic dot)
 (define-generic matmul)
@@ -18,7 +21,6 @@
 	(y-dims (af-get-dims (get-data y)))
 	(x-data (get-data x))
 	(y-data (get-data y)))
-    ;; (display (cdr x-dims))
     (when (or (not (equal? (cdr x-dims) '(1 1 1)))
 	      (not (equal? (cdr y-dims) '(1 1 1))))
       (throw 'wrong-type-arg "dot applies only to 1D array, aka. vector."))
@@ -26,17 +28,24 @@
 	      (not (af-floating-p y-data)))
       (throw 'wrong-type-arg
 	     "dot applies only to array with floating point values."))
-    (dot x-data y-data)))
+    (af-dot x-data y-data)))
+
 
 (define-method (matmul (x <Array>) (y <Array>))
-  (let ((x-data (get-data x))
+  (let ((x-dims (af-get-dims (get-data x)))
+	(y-dims (af-get-dims (get-data y)))
+	(x-data (get-data x))
 	(y-data (get-data y)))
-    (matmul x-data y-data)))
+    (if (and (equal? (cdr x-dims) '(1 1 1))
+	       (equal? (cdr y-dims) '(1 1 1)))
+	(dot x y)
+	(af-matmul x-data y-data))))
+
 
 (define-method (inverse (x <Array>))
   (let ((x-data (get-data x)))
-    (inverse x-data)))
+    (af-inverse x-data)))
 
 (define-method (transpose (x <Array>))
   (let ((x-data (get-data x)))
-    (transpose x-data)))
+    (af-transpose x-data)))
