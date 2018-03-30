@@ -35,7 +35,7 @@
   (test-assert (af-dot b b))
   (test-error (af-dot c c))
   (test-error (af-dot c b))
-  (test-assert (dot c c))
+  (test-assert "dot return class" (is-a? (dot c c) <Array>))
   (test-assert "matmul vector" (matmul c c))
   (test-assert "matmul matrix"
     (let ((mat (make-Array #:value #2f64((1 2) (4 5)))))

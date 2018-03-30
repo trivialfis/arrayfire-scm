@@ -44,7 +44,7 @@
 	      (not (af-floating-p y-data)))
       (throw 'wrong-type-arg
 	     "dot applies only to array with floating point values."))
-    (af-dot x-data y-data)))
+    (af-catch (lambda _ (make-Array #:value (af-dot x-data y-data))))))
 
 
 (define-method (matmul (x <Array>) (y <Array>))
@@ -56,16 +56,16 @@
 	       (equal? (cdr y-dims) '(1 1 1)))
 	(dot x y)
 	
-	(af-catch (lambda _ (af-matmul x-data y-data))))))
+	(af-catch (lambda _ (make-Array #:value (af-matmul x-data y-data)))))))
 
 
 (define-method (inverse (x <Array>))
   (let ((x-data (get-data x)))
     (af-catch
-     (lambda _ (af-inverse x-data)))))
+     (lambda _ (make-Array #:value (af-inverse x-data))))))
 
 
 (define-method (transpose (x <Array>))
   (let ((x-data (get-data x)))
     (af-catch
-     (lambda _ (af-transpose x-data)))))
+     (lambda _ (make-Array #:value (af-transpose x-data))))))

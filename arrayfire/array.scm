@@ -39,7 +39,9 @@
 	    (dims  #f)
 	    (dtype #f))
    (cond (value
-	  (cond ((array? value)
+	  (cond ((equal? (class-name (class-of value)) 'afarray)
+		 (make <Array> #:data value))
+		((array? value)
 		 (make <Array> #:data (af-from-array value)))
 
 		((list? value)
@@ -54,9 +56,7 @@
 
 		((is-a? value <Array>)
 		 (make <Array> #:data (af-retain-array value)))
-
-		;; (else (error "Don't know how to initialize Array from value."))
-		))
+		(else (error "Don't know how to initialize Array from value."))))
 	 (else (error "Don't know how to initialize Array.")))))
 
 (define-generic display)
