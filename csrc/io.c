@@ -45,13 +45,11 @@ SCM load_image_w(SCM _filename, SCM _is_color)
     }
   const char *filename = scm_to_locale_string(_filename);
   scm_dynwind_unwind_handler (free, (void*)filename, SCM_F_WIND_EXPLICITLY);
+
   af_array out = 0;
   af_err errno = af_load_image(&out, filename, is_color);
-  if (errno != AF_SUCCESS)
-    {
-      SCM message = scm_from_utf8_string("Load image failed.\n");
-      scm_throw(af_error, message);
-    }
+  AFS_ASSERT("load_image", errno);
+
   SCM result = scm_make_foreign_object_1(afarray_type, (af_array)out);
 
   scm_dynwind_end ();
@@ -69,11 +67,7 @@ SCM save_image_w(SCM _filename, SCM _in)
   af_array in = scm_foreign_object_ref(_in, 0);
 
   af_err errno = af_save_image(filename, in);
-  if (errno != AF_SUCCESS)
-    {
-      SCM message = scm_from_utf8_string("Save image failed.\n");
-      scm_throw(af_error, message);
-    }
+  AFS_ASSERT("save_image", errno);
 
   scm_dynwind_end();
   return SCM_BOOL_T;
@@ -97,7 +91,8 @@ SCM save_array_w(SCM _index, SCM _key, SCM _arr, SCM _filename, SCM _append)
   scm_assert_foreign_object_type(afarray_type, _arr);
   af_array arr = scm_foreign_object_ref(_arr, 0);
 
-  af_save_array(&index, key, arr, filename, append);
+  af_err errno = af_save_array(&index, key, arr, filename, append);
+  AFS_ASSERT("save_array", errno);
 
   scm_dynwind_end();
   return SCM_BOOL_T;
