@@ -25,20 +25,33 @@
   #:export (dot
 	    matmul
 	    inverse
-	    transpose))
+	    transpose
+	    Array?
+	    vector?))
 
 (define-generic dot)
 (define-generic matmul)
 (define-generic inverse)
 (define-generic transpose)
 
+
+(define (Array? x)
+  (is-a? x <Array>))
+
+
+(define (vector? x)
+  (if (Array? x)
+      (let* ((data (get-data x))
+	     (dims (af-get-dims data)))
+	(equal? (cdr dims) '(1 1 1)))
+      #f))
+
+
 (define-method (dot (x <Array>) (y <Array>))
-  (let ((x-dims (af-get-dims (get-data x)))
-	(y-dims (af-get-dims (get-data y)))
-	(x-data (get-data x))
+  (let ((x-data (get-data x))
 	(y-data (get-data y)))
-    (when (or (not (equal? (cdr x-dims) '(1 1 1)))
-	      (not (equal? (cdr y-dims) '(1 1 1))))
+    (when (or (not (vector? x))
+	      (not (vector? y)))
       (throw 'wrong-type-arg "dot applies only to 1D array, aka. vector."))
     (when (or (not (af-floating-p x-data))
 	      (not (af-floating-p y-data)))
@@ -48,14 +61,11 @@
 
 
 (define-method (matmul (x <Array>) (y <Array>))
-  (let ((x-dims (af-get-dims (get-data x)))
-	(y-dims (af-get-dims (get-data y)))
-	(x-data (get-data x))
+  (let ((x-data (get-data x))
 	(y-data (get-data y)))
-    (if (and (equal? (cdr x-dims) '(1 1 1))
-	       (equal? (cdr y-dims) '(1 1 1)))
+    (if (and (vector? x)
+	     (vector? y))
 	(dot x y)
-	
 	(af-catch (lambda _ (make-Array #:value (af-matmul x-data y-data)))))))
 
 
