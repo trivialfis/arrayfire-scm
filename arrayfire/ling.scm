@@ -47,6 +47,14 @@
       #f))
 
 
+(define (matrix? x)
+  (if (Array? x)
+      (let* ((data (get-data x))
+	     (dims (af-get-dims data)))
+	(equal? (cddr dims) '(1 1)))
+      #f))
+
+
 (define-method (dot (x <Array>) (y <Array>))
   (let ((x-data (get-data x))
 	(y-data (get-data y)))
